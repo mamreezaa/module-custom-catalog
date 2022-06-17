@@ -45,50 +45,6 @@
                 </settings>
             </filterSelect>
         </filters>
-        <massaction name="listing_massaction"
-                    component="Magento_Ui/js/grid/tree-massactions"
-                    class="\Magento\Catalog\Ui\Component\Product\MassAction">
-            <action name="delete">
-                <settings>
-                    <confirm>
-                        <message translate="true">Delete selected items?</message>
-                        <title translate="true">Delete items</title>
-                    </confirm>
-                    <url path="catalog/product/massDelete"/>
-                    <type>delete</type>
-                    <label translate="true">Delete</label>
-                </settings>
-            </action>
-            <action name="status">
-                <settings>
-                    <type>status</type>
-                    <label translate="true">Change status</label>
-                    <actions>
-                        <action name="0">
-                            <type>enable</type>
-                            <label translate="true">Enable</label>
-                            <url path="catalog/product/massStatus">
-                                <param name="status">1</param>
-                            </url>
-                        </action>
-                        <action name="1">
-                            <type>disable</type>
-                            <label translate="true">Disable</label>
-                            <url path="catalog/product/massStatus">
-                                <param name="status">2</param>
-                            </url>
-                        </action>
-                    </actions>
-                </settings>
-            </action>
-            <action name="attributes">
-                <settings>
-                    <url path="catalog/product_action_attribute/edit"/>
-                    <type>attributes</type>
-                    <label translate="true">Update attributes</label>
-                </settings>
-            </action>
-        </massaction>
         <paging name="listing_paging"/>
     </listingToolbar>
     <columns name="product_columns" class="Magento\Catalog\Ui\Component\Listing\Columns">
@@ -116,7 +72,7 @@
                 <sorting>asc</sorting>
             </settings>
         </column>
-        <column name="name" sortOrder="30">
+        <column name="name" sortOrder="20">
             <settings>
                 <addField>true</addField>
                 <filter>text</filter>
@@ -124,23 +80,27 @@
                 <label translate="true">Name</label>
             </settings>
         </column>
-        <column name="sku" sortOrder="60">
+        <column name="sku" sortOrder="30">
             <settings>
                 <filter>text</filter>
                 <bodyTmpl>Magento_Catalog/grid/cells/preserved</bodyTmpl>
                 <label translate="true">SKU</label>
             </settings>
         </column>
-        <column name="vpn" sortOrder="70">
+        <column name="vpn" sortOrder="40">
             <settings>
                 <addField>true</addField>
                 <filter>text</filter>
+                <sortable>false</sortable>
+                <bodyTmpl>Magento_Catalog/grid/cells/preserved</bodyTmpl>
                 <label translate="true">Vendor Product Number</label>
             </settings>
         </column>
-        <column name="copy_write_info" sortOrder="70">
+        <column name="copy_write_info" sortOrder="50">
             <settings>
                 <addField>true</addField>
+                <sortable>false</sortable>
+                <bodyTmpl>Magento_Catalog/grid/cells/preserved</bodyTmpl>
                 <label translate="true">Copy Write Info</label>
             </settings>
         </column>
