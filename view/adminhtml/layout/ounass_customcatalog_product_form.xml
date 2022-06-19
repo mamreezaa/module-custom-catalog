@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) Ounass, All rights reserved.
+  -->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <referenceContainer name="content">
+        <uiComponent name="ounass_customcatalog_product_form"/>
+    </referenceContainer>
+</layout>

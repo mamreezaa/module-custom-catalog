@@ -7,6 +7,7 @@
     <body>
         <referenceContainer name="content">
             <uiComponent name="ounass_customcatalog_product_listing"/>
+            <block class="Ounass\CustomCatalog\Block\Adminhtml\Product" name="products_list"/>
         </referenceContainer>
     </body>
 </page>
