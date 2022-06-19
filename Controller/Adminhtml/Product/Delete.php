@@ -53,22 +53,22 @@ class Delete extends Action
 
 
     /**
-     * @return ResultInterface|ResponseInterface
+     * @return ResultInterface
      */
-    public function execute(): ResultInterface|ResponseInterface
+    public function execute(): ResultInterface
     {
         $productId = (int) $this->getRequest()->getParam('id');
         try {
             $product = $this->productRepository->getById($productId);
             $this->productRepository->delete($product);
             $this->messageManager->addSuccessMessage(
-                __('Product with the ID %1 have been deleted.', $productId)
+                __('Product with the ID %1 has been deleted.', $productId)
             );
         } catch (LocalizedException $exception) {
             $this->logger->error($exception->getLogMessage());
             $this->messageManager->addErrorMessage(
                 __(
-                    "Product with the ID %1 haven\'t been deleted",
+                    "Product with the ID %1 has\'t been deleted",
                     $productId
                 )
             );

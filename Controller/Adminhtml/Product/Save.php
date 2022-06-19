@@ -61,11 +61,10 @@ class Save extends Product
 
     public function execute()
     {
-
         $data = $this->getRequest()->getPostValue();
 
         if (!empty($data['entity_id'])) {
-            var_dump('existing product');
+            var_dump($data);
         } else {
             var_dump('new product');
         }

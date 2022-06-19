@@ -61,11 +61,11 @@ class Edit extends Product implements HttpGetActionInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function execute(): Page|Redirect
+    public function execute(): Page
     {
-        //$storeId = (int) $this->getRequest()->getParam('store', 0);
-        //$store = $this->storeManager->getStore($storeId);
-        //$this->storeManager->setCurrentStore($store->getCode());
+        $storeId = (int) $this->getRequest()->getParam('store', 0);
+        $store = $this->storeManager->getStore($storeId);
+        $this->storeManager->setCurrentStore($store->getCode());
         $productId = (int) $this->getRequest()->getParam('id');
         $product = $this->productBuilder->build($this->getRequest());
 
@@ -87,18 +87,6 @@ class Edit extends Product implements HttpGetActionInterface
         $resultPage->getConfig()->getTitle()->prepend(__('Products'));
         $resultPage->getConfig()->getTitle()->prepend($product->getSku());
         $resultPage->getConfig()->getTitle()->prepend($product->getName());
-//        if (!$this->storeManager->isSingleStoreMode()
-//            && ($switchBlock = $resultPage->getLayout()->getBlock('store_switcher'))
-//        ) {
-//            $switchBlock->setDefaultStoreName(__('Default Values'))
-//                ->setWebsiteIds($product->getWebsiteIds())
-//                ->setSwitchUrl(
-//                    $this->getUrl(
-//                        'ounass_customcatalog/*/*',
-//                        ['_current' => true, 'active_tab' => null, 'tab' => null, 'store' => null]
-//                    )
-//                );
-//        }
         return $resultPage;
     }
 }
