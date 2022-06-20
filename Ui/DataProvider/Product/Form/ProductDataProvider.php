@@ -36,7 +36,7 @@ class ProductDataProvider extends AbstractDataProvider
     ) {
         $this->collection = $employeeCollectionFactory->create();
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-        $this->addField(['entity_id', 'name', 'price', 'vpn', 'copy_write_info']);
+        $this->addField(['name', 'price', 'vpn', 'copy_write_info']);
     }
 
     /**
