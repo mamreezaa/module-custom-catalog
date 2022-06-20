@@ -11,4 +11,12 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
+    <route url="/V1/product/update" method="PUT">
+        <service class="Ounass\CustomCatalog\Api\ProductRepositoryInterface" method="enqueueProduct" />
+        <resources>
+            <!--<resource ref="Ounass_CustomCatalog::customcatalog_products" />-->
+            <!--Making this public only for demo purpose-->
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
 </routes>
