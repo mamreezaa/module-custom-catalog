@@ -2,36 +2,30 @@
 
 namespace Ounass\CustomCatalog\Model;
 
+use Exception;
+use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Model\Attribute\ScopeOverriddenValue;
+use Magento\Catalog\Model\Product\Gallery\MimeTypeExtensionMap;
+use Magento\Catalog\Model\ProductFactory;
+use Magento\Framework\Api\Data\ImageContentInterfaceFactory;
+use Magento\Framework\Api\ImageContentValidatorInterface;
+use Magento\Framework\Api\ImageProcessorInterface;
+use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\EntityManager\Operation\Read\ReadExtensions;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\MessageQueue\Publisher;
 use Ounass\CustomCatalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Ounass\CustomCatalog\Api\ProductRepositoryInterface;
 use Ounass\CustomCatalog\Model\ResourceModel\Product as CustomProductResourceModel;
+use Ramsey\Uuid\Uuid;
 
 /**
  *
  */
-class ProductRepository implements ProductRepositoryInterface
+class ProductRepository extends \Magento\Catalog\Model\ProductRepository implements ProductRepositoryInterface
 {
-    /**
-     * @var CollectionFactory
-     */
-    protected CollectionFactory $collectionFactory;
-
-    /**
-     * ProductRepository constructor.
-     * @param CollectionFactory $collectionFactory
-     */
-
-    protected CustomProductResourceModel $resourceModel;
-
-    public function __construct(
-        CollectionFactory      $collectionFactory,
-        CustomProductResourceModel $resourceModel
-    ) {
-        $this->collectionFactory = $collectionFactory;
-        $this->resourceModel = $resourceModel;
-    }
-
     /**
      * @inheritdoc
      */
@@ -46,17 +40,18 @@ class ProductRepository implements ProductRepositoryInterface
 
     /**
      * @inheritdoc
-     * @throws \Exception
      */
-    public function enqueueProduct(ProductInterface $product): ProductInterface
+    public function enqueueProduct(ProductInterface $product): ProductUpdateMessage
     {
-        $validationResult = $this->resourceModel->customProductValidate($product);
-        if (true !== $validationResult) {
-            throw new \Magento\Framework\Exception\CouldNotSaveException(
-                __('Invalid product data: %1', implode(',', $validationResult))
-            );
+        $existingProduct = $this->getById($product->getId());
+        if (!$existingProduct->getId()) {
+            throw new NoSuchEntityException;
         }
-        //publish $product
-        return $product;
+        $uuid = Uuid::uuid4()->toString();
+        $publisher = ObjectManager::getInstance()->get(Publisher::class);
+        $message = ObjectManager::getInstance()->get(ProductUpdateMessage::class);
+        $message->setRequestUuid($uuid)->setBody([$product->getData()]);
+        $publisher->publish('customcatalog.product.update', $message);
+        return $message;
     }
 }

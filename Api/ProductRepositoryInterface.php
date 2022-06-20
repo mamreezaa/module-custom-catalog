@@ -5,23 +5,20 @@
 
 namespace Ounass\CustomCatalog\Api;
 
+use Magento\Framework\Exception\NoSuchEntityException;
 use Ounass\CustomCatalog\Api\Data\ProductInterface;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\StateException;
+use Ounass\CustomCatalog\Model\ProductUpdateMessage;
 
-interface ProductRepositoryInterface
+interface ProductRepositoryInterface extends \Magento\Catalog\Api\ProductRepositoryInterface
 {
     /**
      * Create product
      *
      * @param ProductInterface $product
-     * @return ProductInterface
-     * @throws InputException
-     * @throws StateException
-     * @throws CouldNotSaveException
+     * @return ProductUpdateMessage
+     * @throws NoSuchEntityException
      */
-    public function enqueueProduct(ProductInterface $product): ProductInterface;
+    public function enqueueProduct(ProductInterface $product): ProductUpdateMessage;
     /**
      * Get product list by vpn
      * @param string $vpn
