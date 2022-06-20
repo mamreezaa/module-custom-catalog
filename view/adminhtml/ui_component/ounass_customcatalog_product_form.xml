@@ -32,6 +32,7 @@
                 <item name="config" xsi:type="array">
                     <item name="submit_url" xsi:type="url" path="*/*/save"/>
                 </item>
+<!--                <validateUrl path="*/*/validate"/>-->
             </argument>
         </argument>
         <argument name="data" xsi:type="array">
@@ -45,36 +46,53 @@
             <collapsible>false</collapsible>
             <label translate="true">General</label>
         </settings>
-        <field name="entity_id" sortOrder="5" formElement="input">
+        <field name="name" sortOrder="30" formElement="input">
             <settings>
                 <dataType>text</dataType>
-                <dataScope>entity_id</dataScope>
-                <visible>false</visible>
-            </settings>
-        </field>
-        <field name="sku" sortOrder="10" formElement="input">
-            <settings>
-                <dataType>text</dataType>
-                <dataScope>sku</dataScope>
-                <scopeLabel>[GLOBAL]</scopeLabel>
-                <label translate="true">SKU</label>
+                <dataScope>product.name</dataScope>
+                <scopeLabel>[STORE VIEW]</scopeLabel>
+                <label translate="true">Product Name</label>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
             </settings>
         </field>
-        <field name="vpn" sortOrder="20" formElement="input">
+        <field name="sku" sortOrder="40" formElement="input">
             <settings>
                 <dataType>text</dataType>
-                <dataScope>vpn</dataScope>
+                <dataScope>product.sku</dataScope>
+                <scopeLabel>[GLOBAL]</scopeLabel>
+                <label translate="true">SKU</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="no-marginal-whitespace" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="price" sortOrder="50" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <dataScope>product.price</dataScope>
+                <scopeLabel>[GLOBAL]</scopeLabel>
+                <label translate="true">Price</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="vpn" sortOrder="60" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <dataScope>product.vpn</dataScope>
                 <scopeLabel>[GLOBAL]</scopeLabel>
                 <label translate="true">VPN</label>
             </settings>
         </field>
-        <field name="copy_write_info" sortOrder="30" formElement="input">
+        <field name="copy_write_info" sortOrder="70" formElement="input">
             <settings>
                 <dataType>text</dataType>
-                <dataScope>copy_write_info</dataScope>
+                <dataScope>product.copy_write_info</dataScope>
                 <scopeLabel>[STORE VIEW]</scopeLabel>
                 <label translate="true">Copy Write Info</label>
             </settings>

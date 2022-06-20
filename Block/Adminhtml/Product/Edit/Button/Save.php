@@ -20,8 +20,25 @@ class Save extends Generic
             'label' => __('Save'),
             'class' => 'save primary',
             'data_attribute' => [
-                'mage-init' => ['button' => ['event' => 'save']],
-                'form-role' => 'save',
+                'mage-init' => [
+                    'buttonAdapter' => [
+                        'actions' => [
+                            [
+                                'targetName' => 'ounass_customcatalog_product_form.ounass_customcatalog_product_form',
+                                'actionName' => 'save',
+                                'params' => [
+                                    true,
+                                    [
+                                        'id' => $this->context->getRequestParam('id'),
+                                        'store' => $this->context->getRequestParam('store'),
+                                        'type' => $this->context->getRequestParam('type'),
+                                        'set' => $this->context->getRequestParam('set'),
+                                    ],
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
             ],
             'sort_order' => 30,
         ];

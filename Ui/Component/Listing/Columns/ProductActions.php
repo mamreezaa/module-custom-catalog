@@ -53,7 +53,12 @@ class ProductActions extends Column
                 $item[$this->getData('name')]['edit'] = [
                     'href' => $this->urlBuilder->getUrl(
                         'ounass_customcatalog/product/edit',
-                        ['id' => $item['entity_id'], 'store' => $storeId]
+                        [
+                            'id' => $item['entity_id'],
+                            'store' => $item['store_id'],
+                            'type' => $item['type_id'],
+                            'set' => $item['attribute_set_id']
+                        ]
                     ),
                     'ariaLabel' => __('Edit ') . $item['name'],
                     'label' => __('Edit'),

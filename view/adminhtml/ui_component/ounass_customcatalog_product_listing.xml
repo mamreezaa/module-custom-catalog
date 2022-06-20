@@ -60,11 +60,6 @@
                 </param>
             </childDefaults>
         </settings>
-        <selectionsColumn name="ids" sortOrder="0">
-            <settings>
-                <indexField>entity_id</indexField>
-            </settings>
-        </selectionsColumn>
         <column name="entity_id" sortOrder="10">
             <settings>
                 <filter>textRange</filter>

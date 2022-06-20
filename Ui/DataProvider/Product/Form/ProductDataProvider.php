@@ -36,7 +36,7 @@ class ProductDataProvider extends AbstractDataProvider
     ) {
         $this->collection = $employeeCollectionFactory->create();
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-        $this->addField(['vpn', 'copy_write_info']);
+        $this->addField(['entity_id', 'name', 'price', 'vpn', 'copy_write_info']);
     }
 
     /**
@@ -52,7 +52,7 @@ class ProductDataProvider extends AbstractDataProvider
         }
         $items = $this->collection->getItems();
         foreach ($items as $product) {
-            $data[$product->getId()] = $product->getData();
+            $data[$product->getId()] = ['product' => $product->getData()];
         }
         return $data;
     }

@@ -6,33 +6,23 @@
 namespace Ounass\CustomCatalog\Controller\Adminhtml\Product;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Catalog\Controller\Adminhtml\Product;
+use Magento\Catalog\Model\Product\TypeTransitionManager;
+use Ounass\CustomCatalog\Controller\Adminhtml\Product;
 use Magento\Catalog\Controller\Adminhtml\Product\Builder;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-use Magento\Backend\App\Action;
-use Magento\Catalog\Model\ProductFactory;
+use Magento\Catalog\Controller\Adminhtml\Product\Initialization\Helper as InitializationHelper;
 
 class Save extends Product
 {
     /**
-     * Authorization level of a basic admin session
-     *
-     * @see _isAllowed()
+     * @var StoreManagerInterface
      */
-    const ADMIN_RESOURCE = 'Ounass_CustomCatalog::customcatalog_products';
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    private ProductRepositoryInterface $productRepository;
-
-    private $productFactory;
+    private $storeManager;
 
     /**
      * @var LoggerInterface
@@ -40,33 +30,71 @@ class Save extends Product
     private LoggerInterface $logger;
 
     /**
+     * @var InitializationHelper
+     */
+    private InitializationHelper $initializationHelper;
+
+    /**
+     * @var TypeTransitionManager
+     */
+    private TypeTransitionManager $productTypeManager;
+
+
+    private ProductRepositoryInterface $productRepository;
+
+    /**
      * @param Context $context
      * @param Builder $productBuilder
      * @param ProductRepositoryInterface $productRepository
      * @param LoggerInterface $logger
+     * @param InitializationHelper $initializationHelper
+     * @param TypeTransitionManager $productTypeManager
+     * @param StoreManagerInterface|null $storeManager
      */
     public function __construct(
         Context                    $context,
-        Builder $productBuilder,
+        Builder                    $productBuilder,
         ProductRepositoryInterface $productRepository,
-        ProductFactory $productFactory,
-        LoggerInterface $logger
+        LoggerInterface            $logger,
+        InitializationHelper       $initializationHelper,
+        TypeTransitionManager $productTypeManager,
+        StoreManagerInterface      $storeManager = null
     ) {
         parent::__construct($context, $productBuilder);
+        $this->initializationHelper = $initializationHelper;
         $this->productRepository = $productRepository;
-        $this->productFactory = $productFactory;
+        $this->productTypeManager = $productTypeManager;
         $this->logger = $logger;
+        $this->storeManager = $storeManager ?: ObjectManager::getInstance()
+            ->get(StoreManagerInterface::class);
     }
 
 
-    public function execute()
+    public function execute(): ResultInterface
     {
+        $storeId = $this->getRequest()->getParam('store', 0);
+        $store = $this->storeManager->getStore($storeId);
+        $this->storeManager->setCurrentStore($store->getCode());
+        $resultRedirect = $this->resultRedirectFactory->create();
         $data = $this->getRequest()->getPostValue();
 
-        if (!empty($data['entity_id'])) {
-            var_dump($data);
+        if ($data) {
+            try {
+                $product = $this->initializationHelper->initialize(
+                    $this->productBuilder->build($this->getRequest())
+                );
+                $product = $this->productRepository->save($product);
+                $this->messageManager->addSuccessMessage(__('You saved the product.'));
+                $resultRedirect->setPath('*/*/edit', ['id' => $product->getId(), 'store' => $storeId]);
+            } catch (LocalizedException|\Exception $e) {
+                $resultRedirect->setPath('*/*/');
+                $this->messageManager->addErrorMessage($e->getMessage());
+            }
         } else {
-            var_dump('new product');
+            $resultRedirect->setPath('*/*/');
+            $this->messageManager->addErrorMessage('No data to save');
         }
+
+        return $resultRedirect;
     }
 }
