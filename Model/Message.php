@@ -5,12 +5,13 @@
 
 namespace Ounass\CustomCatalog\Model;
 
-use Ounass\CustomCatalog\Api\Data\ProductUpdateMessageInterface;
+use Ounass\CustomCatalog\Api\Data\MessageInterface;
+use Ounass\CustomCatalog\Api\Data\ProductInterface;
 
-class ProductUpdateMessage implements ProductUpdateMessageInterface
+class Message implements MessageInterface
 {
     private string $requestUuid;
-    private array $body;
+    private \Ounass\CustomCatalog\Api\Data\ProductInterface $product;
 
     /**
      * Get Message request uuid
@@ -37,22 +38,22 @@ class ProductUpdateMessage implements ProductUpdateMessageInterface
     /**
      * Message body
      *
-     * @return array
+     * @return \Ounass\CustomCatalog\Api\Data\ProductInterface
      */
-    public function getBody(): array
+    public function getProduct()
     {
-        return $this->body;
+        return  $this->product;
     }
 
     /**
      * Set message body
      *
-     * @param array $body
+     * @param \Ounass\CustomCatalog\Api\Data\ProductInterface $product
      * @return $this
      */
-    public function setBody(array $body)
+    public function setProduct(\Ounass\CustomCatalog\Api\Data\ProductInterface $product)
     {
-        $this->body = $body;
+        $this->product = $product;
         return $this;
     }
 }

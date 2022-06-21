@@ -5,6 +5,7 @@
 
 namespace Ounass\CustomCatalog\Model\Product;
 
+use Ounass\CustomCatalog\Api\Data\MessageInterface;
 use Psr\Log\LoggerInterface;
 
 class UpdateConsumer
@@ -21,11 +22,12 @@ class UpdateConsumer
     }
 
     /**
-     * @param $message
+     * @param MessageInterface $message
      * @return void
      */
-    public function process($message)
+    public function process(MessageInterface $message): void
     {
-        $this->logger->info($message);
+        $this->logger->info('apple');
+        $this->logger->info($message->getRequestUuid());
     }
 }

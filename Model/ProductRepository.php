@@ -15,6 +15,7 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\EntityManager\Operation\Read\ReadExtensions;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\MessageQueue\Publisher;
+use Ounass\CustomCatalog\Api\Data\MessageInterface;
 use Ounass\CustomCatalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Ounass\CustomCatalog\Api\ProductRepositoryInterface;
@@ -41,7 +42,7 @@ class ProductRepository extends \Magento\Catalog\Model\ProductRepository impleme
     /**
      * @inheritdoc
      */
-    public function enqueueProduct(ProductInterface $product): ProductUpdateMessage
+    public function enqueueProduct(ProductInterface $product): MessageInterface
     {
         $existingProduct = $this->getById($product->getId());
         if (!$existingProduct->getId()) {
@@ -49,8 +50,8 @@ class ProductRepository extends \Magento\Catalog\Model\ProductRepository impleme
         }
         $uuid = Uuid::uuid4()->toString();
         $publisher = ObjectManager::getInstance()->get(Publisher::class);
-        $message = ObjectManager::getInstance()->get(ProductUpdateMessage::class);
-        $message->setRequestUuid($uuid)->setBody([$product->getData()]);
+        $message = ObjectManager::getInstance()->get(Message::class);
+        $message->setRequestUuid($uuid)->setProduct($product);
         $publisher->publish('customcatalog.product.update', $message);
         return $message;
     }

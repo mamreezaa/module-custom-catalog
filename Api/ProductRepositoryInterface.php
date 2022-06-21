@@ -6,23 +6,24 @@
 namespace Ounass\CustomCatalog\Api;
 
 use Magento\Framework\Exception\NoSuchEntityException;
+use Ounass\CustomCatalog\Api\Data\MessageInterface;
 use Ounass\CustomCatalog\Api\Data\ProductInterface;
-use Ounass\CustomCatalog\Model\ProductUpdateMessage;
+use Ounass\CustomCatalog\Model\Message;
 
 interface ProductRepositoryInterface extends \Magento\Catalog\Api\ProductRepositoryInterface
 {
     /**
      * Create product
      *
-     * @param ProductInterface $product
-     * @return ProductUpdateMessage
+     * @param \Ounass\CustomCatalog\Api\Data\ProductInterface $product
+     * @return Message
      * @throws NoSuchEntityException
      */
-    public function enqueueProduct(ProductInterface $product): ProductUpdateMessage;
+    public function enqueueProduct(\Ounass\CustomCatalog\Api\Data\ProductInterface $product): MessageInterface;
     /**
      * Get product list by vpn
      * @param string $vpn
-     * @return ProductInterface[]
+     * @return \Ounass\CustomCatalog\Api\Data\ProductInterface[]
      */
     public function getListByVpn(string $vpn): array;
 }

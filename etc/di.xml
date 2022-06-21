@@ -6,5 +6,5 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Ounass\CustomCatalog\Api\ProductRepositoryInterface" type="Ounass\CustomCatalog\Model\ProductRepository"/>
     <preference for="Ounass\CustomCatalog\Api\Data\ProductInterface" type="Ounass\CustomCatalog\Model\Product" />
-    <preference for="Ounass\CustomCatalog\Api\Data\ProductUpdateMessageInterface" type="Ounass\CustomCatalog\Model\ProductUpdateMessage" />
+    <preference for="Ounass\CustomCatalog\Api\Data\MessageInterface" type="Ounass\CustomCatalog\Model\Message" />
 </config>

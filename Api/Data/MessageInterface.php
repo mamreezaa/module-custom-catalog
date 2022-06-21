@@ -2,11 +2,11 @@
 
 namespace Ounass\CustomCatalog\Api\Data;
 
-interface ProductUpdateMessageInterface
+interface MessageInterface
 {
 
     const REQUEST_UUID = 'request_uuid';
-    const BODY = 'body';
+    const PRODUCT = 'product';
 
     /**
      * Get Message request uuid
@@ -26,15 +26,15 @@ interface ProductUpdateMessageInterface
     /**
      * Message body
      *
-     * @return array
+     * @return \Ounass\CustomCatalog\Api\Data\ProductInterface
      */
-    public function getBody();
+    public function getProduct();
 
     /**
      * Set message body
      *
-     * @param array $body
+     * @param \Ounass\CustomCatalog\Api\Data\ProductInterface $product
      * @return $this
      */
-    public function setBody(array $body);
+    public function setProduct(\Ounass\CustomCatalog\Api\Data\ProductInterface $product);
 }
