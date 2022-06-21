@@ -12,7 +12,7 @@
 ```
 2. Install module
 ```shell
-composer composer require ounass/module-custom-catalog dev-main
+composer require ounass/module-custom-catalog dev-main
 ```
 ### REST Api requests
 ```shell
