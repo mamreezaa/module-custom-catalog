@@ -94,10 +94,11 @@ class ProductRepository implements \Ounass\CustomCatalog\Api\ProductRepositoryIn
                 __('Invalid product data: %1', implode(',', $validationResult))
             );
         }
-        $existingProduct = $this->productRepository->getById($product->getEntityId());
-        if (!$existingProduct->getId()) {
-            throw new NoSuchEntityException;
-        }
+//        Decided to do this check when processing the message.
+//        $existingProduct = $this->productRepository->getById($product->getEntityId());
+//        if (!$existingProduct->getId()) {
+//            throw new NoSuchEntityException;
+//        }
         $uuid = Uuid::uuid4()->toString();
         $this->message
             ->setStoreId($this->storeManager->getStore()->getId())

@@ -5,4 +5,5 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
     <consumer name="CustomCatalogProductUpdate" queue="customcatalog_product_update" connection="amqp" consumerInstance="Magento\Framework\MessageQueue\Consumer" handler="Ounass\CustomCatalog\Model\Product\UpdateConsumer::process"/>
+    <consumer name="CustomCatalogDeadMessage" queue="customcatalog_graveyard" connection="amqp" consumerInstance="Magento\Framework\MessageQueue\Consumer" handler="Ounass\CustomCatalog\Model\Product\DeadMessageConsumer::process"/>
 </config>

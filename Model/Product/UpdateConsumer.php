@@ -46,11 +46,12 @@ class UpdateConsumer
                 ->setCustomAttribute('copy_write_info', $message->getProduct()->getCopyWriteInfo());
             $this->productRepository->save($product);
             $this->logger->info("Request {$message->getRequestUuid()} processed successfully");
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $noSuchEntityException) {
-            throw $noSuchEntityException;
-        } catch (\Exception $exception) {
-            $this->logger->critical($exception);
-            throw new LocalizedException("Could not process the request with the UUID {$message->getRequestUuid()}");
+        } catch (\Magento\Framework\Exception\NoSuchEntityException|\Exception $exception) {
+            $this->logger->error(
+                "Request {$message->getRequestUuid()} can not be processed",
+                $exception->getTrace()
+            );
+            throw new $exception;
         }
     }
 }

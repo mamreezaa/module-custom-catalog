@@ -6,7 +6,6 @@
 namespace Ounass\CustomCatalog\Model;
 
 use Ounass\CustomCatalog\Api\Data\MessageInterface;
-use Ounass\CustomCatalog\Api\Data\ProductInterface;
 
 class Message implements MessageInterface
 {
