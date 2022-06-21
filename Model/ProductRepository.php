@@ -11,7 +11,7 @@ use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Ounass\CustomCatalog\Model\ResourceModel\Product as CustomProductResourceModel;
 use Ramsey\Uuid\Uuid;
-use Magento\Backend\App\Action\Context;
+
 /**
  *
  */
