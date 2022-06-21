@@ -22,6 +22,8 @@ composer require ounass/module-custom-catalog dev-main
 2. CRUD operation for products (store level)
 3. Rest api for listing products by vpn
 4. Rest api for asynchronously updates products for with attributes vpn and copy_write_info
+5. Dead message exchange/queue for failed or timed out messages.
+
 
 ### REST Api requests
 ```shell
