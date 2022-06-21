@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<!--
+~ Copyright (c) Ounass, All rights reserved.
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="customcatalog.product.update" request="Ounass\CustomCatalog\Api\Data\MessageInterface"/>
+</config>

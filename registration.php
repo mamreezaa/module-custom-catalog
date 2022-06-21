@@ -1,5 +1,7 @@
 <?php
-
+/*
+ * Copyright (c) Ounass, All rights reserved.
+ */
 use Magento\Framework\Component\ComponentRegistrar;
 
 ComponentRegistrar::register(
