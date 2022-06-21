@@ -5,15 +5,17 @@
 
 namespace Ounass\CustomCatalog\Model\ResourceModel;
 
-class Product extends \Magento\Catalog\Model\ResourceModel\Product
+use Ounass\CustomCatalog\Api\Data\ProductInterface;
+
+class Product
 {
-    public function customProductValidate($object): bool|array
+    public function customProductValidate(ProductInterface $product): bool|array
     {
         $errors = [];
-        if (!isset($object['entity_id'])) {
+        if (empty($product->getEntityId())) {
             $errors[] = "entity_id is required";
         }
-        if (!isset($object['vpn']) and !isset($object['copy_write_info'])) {
+        if (is_null($product->getVpn()) and is_null($product->getCopyWriteInfo())) {
             $errors[] = "At least one attribute(vpn or copy_write_info) is needed.";
         }
 

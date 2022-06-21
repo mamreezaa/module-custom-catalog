@@ -5,10 +5,14 @@
 
 namespace Ounass\CustomCatalog\Model;
 
-use Ounass\CustomCatalog\Api\Data\ProductInterface as OunassCustomProductInterface;
+use Ounass\CustomCatalog\Api\Data\ProductInterface;
 
-class Product extends \Magento\Catalog\Model\Product implements OunassCustomProductInterface
+class Product implements ProductInterface
 {
+    protected string $entity_id;
+    protected string $vpn;
+    protected string $copy_write_info;
+
     /**
      * Retrieve vpn through type instance
      *
@@ -16,18 +20,19 @@ class Product extends \Magento\Catalog\Model\Product implements OunassCustomProd
      */
     public function getVpn()
     {
-        return $this->getData('vpn');
+        return $this->vpn;
     }
 
     /**
      * Set product vpn
      *
      * @param string $vpn
-     * @return \Magento\Catalog\Model\Product
+     * @return $this
      */
     public function setVpn($vpn)
     {
-        return $this->setData(self::VPN, $vpn);
+        $this->vpn = $vpn;
+        return $this;
     }
 
     /**
@@ -37,7 +42,7 @@ class Product extends \Magento\Catalog\Model\Product implements OunassCustomProd
      */
     public function getCopyWriteInfo()
     {
-        return $this->getData(self::COPY_WRITE_INFO);
+        return $this->copy_write_info;
     }
 
     /**
@@ -48,6 +53,29 @@ class Product extends \Magento\Catalog\Model\Product implements OunassCustomProd
      */
     public function setCopyWriteInfo($copy_write_info)
     {
-        return $this->setData(self::COPY_WRITE_INFO, $copy_write_info);
+        $this->copy_write_info = $copy_write_info;
+        return $this;
+    }
+
+    /**
+     * Product ID
+     *
+     * @return string
+     */
+    public function getEntityId()
+    {
+        return $this->entity_id;
+    }
+
+    /**
+     * Set product ID
+     *
+     * @param string $entity_id
+     * @return $this
+     */
+    public function setEntityId($entity_id)
+    {
+        $this->entity_id = $entity_id;
+        return $this;
     }
 }

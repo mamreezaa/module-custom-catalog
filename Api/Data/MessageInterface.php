@@ -9,6 +9,21 @@ interface MessageInterface
     const PRODUCT = 'product';
 
     /**
+     * Store ID
+     *
+     * @return integer
+     */
+    public function getStoreId();
+
+    /**
+     * Set Store ID
+     *
+     * @param integer $store_id
+     * @return $this
+     */
+    public function setStoreId($store_id);
+
+    /**
      * Get Message request uuid
      *
      * @return string

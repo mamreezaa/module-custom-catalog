@@ -12,6 +12,7 @@ class Message implements MessageInterface
 {
     private string $requestUuid;
     private \Ounass\CustomCatalog\Api\Data\ProductInterface $product;
+    private int $store_id;
 
     /**
      * Get Message request uuid
@@ -54,6 +55,28 @@ class Message implements MessageInterface
     public function setProduct(\Ounass\CustomCatalog\Api\Data\ProductInterface $product)
     {
         $this->product = $product;
+        return $this;
+    }
+
+    /**
+     * Store ID
+     *
+     * @return integer
+     */
+    public function getStoreId()
+    {
+        return $this->store_id;
+    }
+
+    /**
+     * Set Store ID
+     *
+     * @param integer $store_id
+     * @return $this
+     */
+    public function setStoreId($store_id)
+    {
+        $this->store_id = $store_id;
         return $this;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Ounass\CustomCatalog\Api\Data;
 
-interface ProductInterface extends \Magento\Catalog\Api\Data\ProductInterface
+interface ProductInterface
 {
 
     const ENTITY_ID = 'entity_id';

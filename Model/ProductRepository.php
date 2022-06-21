@@ -2,31 +2,75 @@
 
 namespace Ounass\CustomCatalog\Model;
 
-use Exception;
-use Magento\Catalog\Api\CategoryLinkManagementInterface;
-use Magento\Catalog\Model\Attribute\ScopeOverriddenValue;
-use Magento\Catalog\Model\Product\Gallery\MimeTypeExtensionMap;
-use Magento\Catalog\Model\ProductFactory;
-use Magento\Framework\Api\Data\ImageContentInterfaceFactory;
-use Magento\Framework\Api\ImageContentValidatorInterface;
-use Magento\Framework\Api\ImageProcessorInterface;
-use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\EntityManager\Operation\Read\ReadExtensions;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\MessageQueue\Publisher;
+use Magento\Store\Model\StoreManagerInterface;
 use Ounass\CustomCatalog\Api\Data\MessageInterface;
 use Ounass\CustomCatalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
-use Ounass\CustomCatalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Ounass\CustomCatalog\Model\ResourceModel\Product as CustomProductResourceModel;
 use Ramsey\Uuid\Uuid;
-
+use Magento\Backend\App\Action\Context;
 /**
  *
  */
-class ProductRepository extends \Magento\Catalog\Model\ProductRepository implements ProductRepositoryInterface
+class ProductRepository implements \Ounass\CustomCatalog\Api\ProductRepositoryInterface
 {
+    /**
+     * @var CollectionFactory
+     */
+    protected $collectionFactory;
+
+    /**
+     * @var ProductRepositoryInterface
+     */
+    protected $productRepository;
+
+    /**
+     * @var Publisher
+     */
+    protected $publisher;
+
+    /**
+     * @var MessageInterface
+     */
+    protected $message;
+
+    /**
+     * @var CustomProductResourceModel
+     */
+    protected $productResourceModel;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
+     * @param CollectionFactory $collectionFactory
+     * @param ProductRepositoryInterface $productRepository
+     * @param Publisher $publisher
+     * @param MessageInterface $message
+     * @param CustomProductResourceModel $productResourceModel
+     * @param StoreManagerInterface $storeManager
+     */
+    public function __construct(
+        CollectionFactory $collectionFactory,
+        ProductRepositoryInterface $productRepository,
+        Publisher $publisher,
+        MessageInterface $message,
+        CustomProductResourceModel $productResourceModel,
+        StoreManagerInterface $storeManager
+    ) {
+        $this->collectionFactory = $collectionFactory;
+        $this->productRepository = $productRepository;
+        $this->publisher = $publisher;
+        $this->message = $message;
+        $this->productResourceModel = $productResourceModel;
+        $this->storeManager = $storeManager;
+    }
+
     /**
      * @inheritdoc
      */
@@ -44,15 +88,22 @@ class ProductRepository extends \Magento\Catalog\Model\ProductRepository impleme
      */
     public function enqueueProduct(ProductInterface $product): MessageInterface
     {
-        $existingProduct = $this->getById($product->getId());
+        $validationResult = $this->productResourceModel->customProductValidate($product);
+        if (true !== $validationResult) {
+            throw new \Magento\Framework\Exception\CouldNotSaveException(
+                __('Invalid product data: %1', implode(',', $validationResult))
+            );
+        }
+        $existingProduct = $this->productRepository->getById($product->getEntityId());
         if (!$existingProduct->getId()) {
             throw new NoSuchEntityException;
         }
         $uuid = Uuid::uuid4()->toString();
-        $publisher = ObjectManager::getInstance()->get(Publisher::class);
-        $message = ObjectManager::getInstance()->get(Message::class);
-        $message->setRequestUuid($uuid)->setProduct($product);
-        $publisher->publish('customcatalog.product.update', $message);
-        return $message;
+        $this->message
+            ->setStoreId($this->storeManager->getStore()->getId())
+            ->setRequestUuid($uuid)
+            ->setProduct($product);
+        $this->publisher->publish('customcatalog.product.update', $this->message);
+        return $this->message;
     }
 }

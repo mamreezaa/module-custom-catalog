@@ -10,7 +10,7 @@ use Ounass\CustomCatalog\Api\Data\MessageInterface;
 use Ounass\CustomCatalog\Api\Data\ProductInterface;
 use Ounass\CustomCatalog\Model\Message;
 
-interface ProductRepositoryInterface extends \Magento\Catalog\Api\ProductRepositoryInterface
+interface ProductRepositoryInterface
 {
     /**
      * Create product
