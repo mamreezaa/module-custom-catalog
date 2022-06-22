@@ -8,7 +8,9 @@ namespace Ounass\CustomCatalog\Model\Product;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Ounass\CustomCatalog\Api\Data\MessageInterface;
+use Ounass\CustomCatalog\Api\Data\ProductInterface;
 use Psr\Log\LoggerInterface;
+use Ounass\CustomCatalog\Model\ResourceModel\Product as CustomProductResourceModel;
 
 class UpdateConsumer
 {
@@ -17,15 +19,23 @@ class UpdateConsumer
      */
     private LoggerInterface $logger;
 
+    /**
+     * @var ProductRepositoryInterface
+     */
     private ProductRepositoryInterface $productRepository;
-
+    /**
+     * @var CustomProductResourceModel
+     */
+    protected $productResourceModel;
 
     public function __construct(
         LoggerInterface $logger,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        CustomProductResourceModel $productResourceModel
     ) {
         $this->logger = $logger;
         $this->productRepository = $productRepository;
+        $this->productResourceModel = $productResourceModel;
     }
 
     /**
@@ -41,9 +51,10 @@ class UpdateConsumer
                 $message->getProduct()->getEntityId(),
                 storeId: $message->getStoreId()
             );
+            $message = $this->productResourceModel->buildMessage($product, $message);
             $product
-                ->setCustomAttribute('vpn', $message->getProduct()->getVpn())
-                ->setCustomAttribute('copy_write_info', $message->getProduct()->getCopyWriteInfo());
+                ->setCustomAttribute(ProductInterface::VPN, $message->getProduct()->getVpn())
+                ->setCustomAttribute(ProductInterface::COPY_WRITE_INFO, $message->getProduct()->getCopyWriteInfo());
             $this->productRepository->save($product);
             $this->logger->info("Request {$message->getRequestUuid()} processed successfully");
         } catch (\Magento\Framework\Exception\NoSuchEntityException|\Exception $exception) {

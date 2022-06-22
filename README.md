@@ -2,7 +2,7 @@
 
 ### Tested on magento community v-2.4.4
 
-### Installation
+### Setup guid
 1. Include this git repository to composer.json
 ```shell
 "repositories": [
@@ -12,9 +12,19 @@
         }
     ],
 ```
-2. Install module
+2. Download module
 ```shell
 composer require ounass/module-custom-catalog dev-main
+```
+3. Install
+```shell
+bin/magento setup:upgrade
+bin/magento setup:di:compile
+```
+4. Start the consumers
+```shell
+bin/magento queue:consumers:start CustomCatalogProductUpdate
+bin/magento queue:consumers:start CustomCatalogDeadMessage
 ```
 
 ### Functions added in this module

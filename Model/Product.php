@@ -10,15 +10,15 @@ use Ounass\CustomCatalog\Api\Data\ProductInterface;
 class Product implements ProductInterface
 {
     protected string $entity_id;
-    protected string $vpn;
-    protected string $copy_write_info;
+    protected ?string $vpn = null;
+    protected ?string $copy_write_info = null;
 
     /**
      * Retrieve vpn through type instance
      *
-     * @return string
+     * @return string|null
      */
-    public function getVpn()
+    public function getVpn(): ?string
     {
         return $this->vpn;
     }
@@ -38,9 +38,9 @@ class Product implements ProductInterface
     /**
      * Product copy write info
      *
-     * @return string
+     * @return string|null
      */
-    public function getCopyWriteInfo()
+    public function getCopyWriteInfo(): ?string
     {
         return $this->copy_write_info;
     }
