@@ -1,5 +1,6 @@
 # Ounass_CustomCatalog
-
+Custom catalog module to read, delete and update specific attributes and create new products.
+Also, this module opens some rest api endpoints to read and update products
 ### Tested on magento community v-2.4.4
 
 ### Setup guid
