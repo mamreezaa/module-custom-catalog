@@ -54,3 +54,16 @@ curl --location --request PUT 'http://{base_url}/rest/default/V1/product/update'
     }
 }'
 ```
+
+#### Sample response for async product update
+```shell
+{
+    "request_uuid": "95bafa0b-0a20-4dc0-9010-91d8870af40e",
+    "product": {
+        "entity_id": "2050",
+        "vpn": "1234",
+        "copy_write_info": "deafult"
+    },
+    "store_id": 1
+}
+```
